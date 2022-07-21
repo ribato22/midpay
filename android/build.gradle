@@ -1,0 +1,43 @@
+group 'id.kakzaki.midpay'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    dependencies {
+        ext.midtrans_version = '1.31.1'
+        // For using the Midtrans Sandbox
+        debugApi "com.midtrans:uikit:$midtrans_version-SANDBOX"
+        // For using the Midtrans Production
+        releaseApi "com.midtrans:uikit:$midtrans_version"
+    }
+}

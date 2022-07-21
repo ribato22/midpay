@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="id.kakzaki.midpay.midpayexample">
+    package="id.kakzaki.midpay_example">
 
     <!-- The INTERNET permission is required for development. Specifically,
          flutter needs it to communicate with the running application
@@ -17,11 +17,13 @@
         tools:replace="android:label"
         android:label="midpay_example"
         android:icon="@mipmap/ic_launcher"
+        android:exported="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
+            android:exported="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">

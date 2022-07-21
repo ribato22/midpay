@@ -31,15 +31,15 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
-import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
+//import io.flutter.plugin.common.PluginRegistry;
+//import io.flutter.plugin.common.PluginRegistry.Registrar;
+//import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
 
 
 /**
  * MidpayPlugin
  */
-public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHandler, RequestPermissionsResultListener,  TransactionFinishedCallback {
+public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHandler,  TransactionFinishedCallback {
     static final String TAG = "MidpayPlugin";
     private MethodChannel channel;
     private Context context;
@@ -52,16 +52,16 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
     /**
      * Plugin registration.
      */
-    public static void registerWith(Registrar registrar) {
-        final MidpayPlugin instance = new MidpayPlugin();
-        //registrar.addRequestPermissionsResultListener(instance);
-        //final MethodChannel channel = new MethodChannel(registrar.messenger(), "midpay")
-        //channel.setMethodCallHandler(new MidpayPlugin(registrar, channel));
-        Activity activity = registrar.activity();
-        Application application = null;
-        instance.setup(registrar.messenger(), application, activity, registrar, null);
-
-    }
+//    public static void registerWith(Registrar registrar) {
+//        final MidpayPlugin instance = new MidpayPlugin();
+//        //registrar.addRequestPermissionsResultListener(instance);
+//        //final MethodChannel channel = new MethodChannel(registrar.messenger(), "midpay")
+//        //channel.setMethodCallHandler(new MidpayPlugin(registrar, channel));
+//        Activity activity = registrar.activity();
+//        Application application = null;
+//        instance.setup(registrar.messenger(), application, activity, registrar, null);
+//
+//    }
 
 
     public MidpayPlugin() {
@@ -74,7 +74,7 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
             final BinaryMessenger messenger,
             final Application application,
             final Activity activity,
-            final PluginRegistry.Registrar registrar,
+//            final PluginRegistry.Registrar registrar,
             final ActivityPluginBinding activityBinding) {
         synchronized (initializationLock) {
             Log.i(TAG, "setup");
@@ -83,13 +83,13 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
             this.context = application;
             channel = new MethodChannel(messenger,   "midpay");
             channel.setMethodCallHandler(this);
-            if (registrar != null) {
-                // V1 embedding setup for activity listeners.
-                registrar.addRequestPermissionsResultListener(this);
-            } else {
-                // V2 embedding setup for activity listeners.
-                activityBinding.addRequestPermissionsResultListener(this);
-            }
+//            if (registrar != null) {
+//                // V1 embedding setup for activity listeners.
+//                registrar.addRequestPermissionsResultListener(this);
+//            } else {
+//                // V2 embedding setup for activity listeners.
+  //              activityBinding.addRequestPermissionsResultListener(this);
+//            }
         }
     }
 
@@ -110,7 +110,7 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
                 pluginBinding.getBinaryMessenger(),
                 (Application) pluginBinding.getApplicationContext(),
                 activityBinding.getActivity(),
-                null,
+//                null,
                 activityBinding);
     }
 
@@ -132,7 +132,7 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
     private void detach() {
         Log.i(TAG, "detach");
         context = null;
-        activityBinding.removeRequestPermissionsResultListener((PluginRegistry.RequestPermissionsResultListener) this);
+//        activityBinding.removeRequestPermissionsResultListener((PluginRegistry.RequestPermissionsResultListener) this);
         activityBinding = null;
         channel.setMethodCallHandler(null);
         channel = null;
@@ -235,8 +235,8 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
         channel.invokeMethod("onTransactionFinished", content);
     }
 
-    @Override
-    public boolean onRequestPermissionsResult(int i, String[] strings, int[] ints) {
-        return false;
-    }
+//    @Override
+//    public boolean onRequestPermissionsResult(int i, String[] strings, int[] ints) {
+//        return false;
+//    }
 }

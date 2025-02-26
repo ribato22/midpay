@@ -207,7 +207,11 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
             if (activity != null) {
                 MidtransSDK.getInstance().startPaymentUiFlow(activity);
             } else {
-                Log.e(TAG, "Activity is null. Cannot start Midtrans UI Flow.");
+                Log.e(TAG, "ERROR: Activity is null, using FLAG_ACTIVITY_NEW_TASK");
+                Intent intent = new Intent(context, PaymentActivity.class);
+                intent.putExtra("snap_token", token);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         } catch (Exception e) {
             Log.d(TAG, "ERROR " + e.getMessage());
@@ -224,7 +228,10 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
             if (activity != null) {
                 MidtransSDK.getInstance().startPaymentUiFlow(activity, token);
             } else {
-                Log.e(TAG, "Activity is null. Cannot start Midtrans UI Flow.");
+                Log.e(TAG, "ERROR: Activity is null, using FLAG_ACTIVITY_NEW_TASK");
+                Intent intent = new Intent(context, PaymentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         } catch (Exception e) {
             Log.d(TAG, "ERROR " + e.getMessage());

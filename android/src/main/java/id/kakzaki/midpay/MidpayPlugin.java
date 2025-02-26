@@ -203,7 +203,12 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
                 setting.setSkipCustomerDetailsPages(json.getBoolean("skip_customer"));
             MidtransSDK.getInstance().setUIKitCustomSetting(setting);
             MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
-            MidtransSDK.getInstance().startPaymentUiFlow(context);
+            // MidtransSDK.getInstance().startPaymentUiFlow(context);
+            if (activity != null) {
+                MidtransSDK.getInstance().startPaymentUiFlow(activity);
+            } else {
+                Log.e(TAG, "Activity is null. Cannot start Midtrans UI Flow.");
+            }
         } catch (Exception e) {
             Log.d(TAG, "ERROR " + e.getMessage());
         }
@@ -215,7 +220,12 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
             UIKitCustomSetting setting = MidtransSDK.getInstance().getUIKitCustomSetting();
             setting.setSkipCustomerDetailsPages(true);
             MidtransSDK.getInstance().setUIKitCustomSetting(setting);
-            MidtransSDK.getInstance().startPaymentUiFlow(context,token);
+            // MidtransSDK.getInstance().startPaymentUiFlow(context,token);
+            if (activity != null) {
+                MidtransSDK.getInstance().startPaymentUiFlow(activity, token);
+            } else {
+                Log.e(TAG, "Activity is null. Cannot start Midtrans UI Flow.");
+            }
         } catch (Exception e) {
             Log.d(TAG, "ERROR " + e.getMessage());
         }

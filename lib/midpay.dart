@@ -138,19 +138,43 @@ class MidtransTransaction {
 }
 
 ///TransactionFinished Model
+// class TransactionFinished {
+//   final bool transactionCanceled;
+//   final String status;
+//   final String source;
+//   final String statusMessage;
+//   final String response;
+
+//   TransactionFinished(
+//     this.transactionCanceled,
+//     this.status,
+//     this.source,
+//     this.statusMessage,
+//     this.response,
+//   );
+// }
+
 class TransactionFinished {
-  final bool transactionCanceled;
-  final String status;
-  final String source;
+  final String statusCode;
   final String statusMessage;
-  final String response;
+  final String transactionId;
+  final String orderId;
+  final int grossAmount;
+  final String paymentType;
+  final String transactionTime;
+  final String transactionStatus;
+  final String transactionCanceled;
 
   TransactionFinished(
-    this.transactionCanceled,
-    this.status,
-    this.source,
+    this.statusCode,
     this.statusMessage,
-    this.response,
+    this.transactionId,
+    this.orderId,
+    this.grossAmount,
+    this.paymentType,
+    this.transactionTime,
+    this.transactionStatus,
+    this.transactionCanceled,
   );
 }
 

@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
@@ -168,7 +169,6 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
                 .setTransactionFinishedCallback(this) // set transaction finish callback (sdk callback)
                 .setMerchantBaseUrl(base_url) //set merchant url
                 .enableLog(true) // enable sdk log
-                //.setColorTheme(new CustomColorTheme("#4CAF50", "#009688", "#CDDC39")) // will replace theme on snap theme on MAP
                 .setColorTheme(new CustomColorTheme("#00A2B9", "#035B71", "#1D2A57")) // will replace theme on snap theme on MAP
                 .setLanguage("id") // will replace language on snap language on MAP
                 .buildSDK();
@@ -226,20 +226,40 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
 
     @Override
     public void onTransactionFinished(TransactionResult transactionResult) {
-        Map<String, Object> content = new HashMap<>();
-        content.put("transactionCanceled", transactionResult.isTransactionCanceled());
-        content.put("status", transactionResult.getStatus());
-        content.put("source", transactionResult.getSource());
-        content.put("statusMessage", transactionResult.getStatusMessage());
-        if (transactionResult.getResponse() != null)
-            content.put("response", transactionResult.getResponse().toString());
-        else
-            content.put("response", "null");
-        channel.invokeMethod("onTransactionFinished", content);
+        Log.d("Midtrans", "🔥 onTransactionFinished triggered!");
+        Log.d("Midtrans", "Transaction Status: " + transactionResult.getStatus());
+        if (channel != null) {
+            Log.d("Midtrans", "🚀 Sending event to Flutter...");
+            Map<String, Object> content = new HashMap<>();
+            TransactionResponse transactionResponse = transactionResult.getResponse();
+            if (transactionResponse != null) {
+                content.put("statusCode", transactionResponse.getStatusCode());
+                content.put("statusMessage", transactionResponse.getStatusMessage());
+                content.put("transactionId", transactionResponse.getTransactionId());
+                content.put("orderId", transactionResponse.getOrderId());
+                content.put("grossAmount", transactionResponse.getGrossAmount());
+                content.put("paymentType", transactionResponse.getPaymentType());
+                content.put("transactionTime", transactionResponse.getTransactionTime());
+                content.put("transactionStatus", transactionResponse.getTransactionStatus());
+                content.put("transactionCanceled", transactionResult.isTransactionCanceled());
+            } else {
+                content.put("transactionStatus", transactionResult.getStatus());
+                content.put("statusMessage", transactionResult.getStatusMessage());
+                content.put("transactionCanceled", transactionResult.isTransactionCanceled());
+            }
+        
+            Log.d("Midtrans", "📌 Data yang dikirim ke Flutter: " + content);
+            // content.put("transactionCanceled", transactionResult.isTransactionCanceled());
+            // content.put("status", transactionResult.getStatus());
+            // content.put("source", transactionResult.getSource());
+            // content.put("statusMessage", transactionResult.getStatusMessage());
+            // if (transactionResult.getResponse() != null)
+            //     content.put("response", transactionResult.getResponse().toString());
+            // else
+            //     content.put("response", "null");
+            channel.invokeMethod("onTransactionFinished", content);
+        } else {
+            Log.e("Midtrans", "🚨 channel is NULL! Tidak bisa mengirim event ke Flutter.");
+        }
     }
-
-//    @Override
-//    public boolean onRequestPermissionsResult(int i, String[] strings, int[] ints) {
-//        return false;
-//    }
 }

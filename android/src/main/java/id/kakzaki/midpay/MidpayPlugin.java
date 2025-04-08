@@ -11,6 +11,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -168,6 +169,8 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
                 .setMerchantBaseUrl(base_url) //set merchant url
                 .enableLog(true) // enable sdk log
                 //.setColorTheme(new CustomColorTheme("#4CAF50", "#009688", "#CDDC39")) // will replace theme on snap theme on MAP
+                .setColorTheme(new CustomColorTheme("#00A2B9", "#035B71", "#1D2A57")) // will replace theme on snap theme on MAP
+                .setLanguage("id") // will replace language on snap language on MAP
                 .buildSDK();
     }
 
@@ -203,16 +206,7 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
                 setting.setSkipCustomerDetailsPages(json.getBoolean("skip_customer"));
             MidtransSDK.getInstance().setUIKitCustomSetting(setting);
             MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
-            // MidtransSDK.getInstance().startPaymentUiFlow(context);
-            if (activity != null) {
-                MidtransSDK.getInstance().startPaymentUiFlow(activity);
-            } else {
-                Log.e(TAG, "ERROR: Activity is null, using FLAG_ACTIVITY_NEW_TASK");
-                Intent intent = new Intent(context, PaymentActivity.class);
-                intent.putExtra("snap_token", token);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
+            MidtransSDK.getInstance().startPaymentUiFlow(activity);
         } catch (Exception e) {
             Log.d(TAG, "ERROR " + e.getMessage());
         }
@@ -224,15 +218,7 @@ public class MidpayPlugin implements FlutterPlugin,ActivityAware, MethodCallHand
             UIKitCustomSetting setting = MidtransSDK.getInstance().getUIKitCustomSetting();
             setting.setSkipCustomerDetailsPages(true);
             MidtransSDK.getInstance().setUIKitCustomSetting(setting);
-            // MidtransSDK.getInstance().startPaymentUiFlow(context,token);
-            if (activity != null) {
-                MidtransSDK.getInstance().startPaymentUiFlow(activity, token);
-            } else {
-                Log.e(TAG, "ERROR: Activity is null, using FLAG_ACTIVITY_NEW_TASK");
-                Intent intent = new Intent(context, PaymentActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
+            MidtransSDK.getInstance().startPaymentUiFlow(activity,token);
         } catch (Exception e) {
             Log.d(TAG, "ERROR " + e.getMessage());
         }

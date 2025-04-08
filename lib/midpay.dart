@@ -22,11 +22,15 @@ class Midpay {
     if (methodCall.method == "onTransactionFinished") {
       if (finishCallback != null) {
         await finishCallback!(TransactionFinished(
-          methodCall.arguments['transactionCanceled'],
-          methodCall.arguments['status'],
-          methodCall.arguments['source'],
-          methodCall.arguments['statusMessage'],
-          methodCall.arguments['response'],
+          methodCall.arguments['statusCode'].toString(), // Pastikan string
+          methodCall.arguments['statusMessage'].toString(),
+          methodCall.arguments['transactionId'].toString(),
+          methodCall.arguments['orderId'].toString(),
+          int.tryParse(methodCall.arguments['grossAmount'].toString()) ?? 0, // Pastikan int
+          methodCall.arguments['paymentType'].toString(),
+          methodCall.arguments['transactionTime'].toString(),
+          methodCall.arguments['transactionStatus'].toString(),
+          methodCall.arguments['transactionCanceled'].toString(), // Pastikan string
         ));
       }
     }
